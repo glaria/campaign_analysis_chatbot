@@ -6,8 +6,8 @@ import plotly.express as px
 from app_functions import *
 
 # Set up the Streamlit app
-st.set_page_config(page_title="CRM Campaign Analysis App", layout="wide", page_icon= "📊")
-st.title("CRM Campaign Analysis App")
+st.set_page_config(page_title="Data load", layout="wide", page_icon= "📊")
+st.title("Data load")
 
 # Create a file uploader for CSV or Excel files
 uploaded_file = st.sidebar.file_uploader("Upload your CSV or Excel file", type=['csv', 'xlsx'])
@@ -162,7 +162,7 @@ if data is not None and len(data.columns) > 1:
 
             import analysis_results as ar
 
-            print(ar.corpus)
+            #print(ar.corpus)
             st.session_state['corpus'] = ar.corpus
             st.session_state['reference_dict'] = ar.reference_dict
 

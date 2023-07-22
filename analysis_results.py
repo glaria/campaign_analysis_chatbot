@@ -74,6 +74,19 @@ segmentation_columns = information_dataset.loc[(information_dataset['METATYPE'] 
 continue_segmentation_columns = information_dataset.loc[(information_dataset['METATYPE'] == 'SF') & 
                                               (information_dataset['DATATYPE'].isin(['NUMERIC'])), 
                                               'COLUMN'].values
+
+reference_dict['b111'] = ('list',segmentation_columns) 
+
+corpus += f'  \nThe list of discrete fields is *xgfw|b111|1111. '
+corpus += f'  \nThe discrete fields are *xgfw|b111|1112. '
+corpus += f'  \nThe discrete variables are *xgfw|b111|1112. '
+
+reference_dict['b112'] = ('list',continue_segmentation_columns) 
+
+corpus += f'  \nThe list of continuous fields is *xgfw|b112|1112. '
+corpus += f'  \nThe continuous fields are *xgfw|b112|1112. '
+corpus += f'  \nThe discrete variables are *xgfw|b112|1112. '
+
 # iterate over segmentation columns
 
 # Create an empty list to store all result DataFrames
@@ -97,6 +110,13 @@ all_results_df = pd.concat(all_results)
 
 # Reset the DataFrame's index to ensure it is unique
 all_results_df.reset_index(drop=True, inplace=True)
+
+reference_dict['d111'] = ('table',all_results_df) 
+
+corpus += f'  \nThe discrete fields with significant results are *xgfw|d111|1111. '
+corpus += f'  \nThe list of discrete variables with significant results are *xgfw|d111|1111. '
+corpus += f'  \nThe list of all discrete fields with significant results are *xgfw|d111|1111. '
+corpus += f'  \nThe list of all discrete variables with significant results are *xgfw|d111|1111. '
 
 #apply the style and display de df
 st.dataframe(all_results_df.style.apply(highlight_pvalue, axis=1))
@@ -200,7 +220,14 @@ for seg_column in continuous_segmentation_columns:
 results_df["TG Acceptors"] = results_df["TG Acceptors"].astype(float).round(0).astype(int)
 results_df["CG Acceptors"] = results_df["CG Acceptors"].astype(float).round(0).astype(int)
 
-st.markdown(f"# Best intervals for continuous variables")
+reference_dict['c111'] = ('table',results_df) 
+
+corpus += f'  \nThe continuous fields with significant results are *xgfw|c111|1111. '
+corpus += f'  \nThe list of continuous variables with significant results are *xgfw|c111|1111. '
+corpus += f'  \nThe list of all continuous fields with significant results are *xgfw|c111|1111. '
+corpus += f'  \nThe list of all continuous variables with significant results are *xgfw|c111|1111. '
+
+#st.markdown(f"# Best intervals for continuous variables")
 
 
 st.dataframe(results_df.style.apply(highlight_pvalue, axis=1))            
