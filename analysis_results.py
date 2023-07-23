@@ -77,15 +77,13 @@ continue_segmentation_columns = information_dataset.loc[(information_dataset['ME
 
 reference_dict['b111'] = ('list',segmentation_columns) 
 
-corpus += f'  \nThe list of discrete fields is *xgfw|b111|1111. '
-corpus += f'  \nThe discrete fields are *xgfw|b111|1112. '
-corpus += f'  \nThe discrete variables are *xgfw|b111|1112. '
+corpus += f'  \nDiscrete fields details *xgfw|b111|1111. '
+corpus += f'  \nDiscrete variables details *xgfw|b111|1112. '
 
 reference_dict['b112'] = ('list',continue_segmentation_columns) 
 
-corpus += f'  \nThe list of continuous fields is *xgfw|b112|1112. '
-corpus += f'  \nThe continuous fields are *xgfw|b112|1112. '
-corpus += f'  \nThe discrete variables are *xgfw|b112|1112. '
+corpus += f'  \nContinuous fields details *xgfw|b112|1112. '
+corpus += f'  \nDiscrete variables details *xgfw|b112|1112. '
 
 # iterate over segmentation columns
 
@@ -113,13 +111,13 @@ all_results_df.reset_index(drop=True, inplace=True)
 
 reference_dict['d111'] = ('table',all_results_df) 
 
-corpus += f'  \nThe discrete fields with significant results are *xgfw|d111|1111. '
+corpus += f'  \nDiscrete fields with significant results *xgfw|d111|1111. '
 corpus += f'  \nThe list of discrete variables with significant results are *xgfw|d111|1111. '
-corpus += f'  \nThe list of all discrete fields with significant results are *xgfw|d111|1111. '
-corpus += f'  \nThe list of all discrete variables with significant results are *xgfw|d111|1111. '
+corpus += f'  \nSignificant discrete fields *xgfw|d111|1111. '
+corpus += f'  \nList of all significant discrete variables *xgfw|d111|1111. '
 
 #apply the style and display de df
-st.dataframe(all_results_df.style.apply(highlight_pvalue, axis=1))
+#st.dataframe(all_results_df.style.apply(highlight_pvalue, axis=1))
 
 ##seccion variables segmentacion continuas
 #Para calcular los mejores segmentos (intervalos) de variables continuas (sin definir cuantiles ) primero debemos reescalar el control group para tener el mismo número de elementos que target
@@ -222,15 +220,15 @@ results_df["CG Acceptors"] = results_df["CG Acceptors"].astype(float).round(0).a
 
 reference_dict['c111'] = ('table',results_df) 
 
-corpus += f'  \nThe continuous fields with significant results are *xgfw|c111|1111. '
+corpus += f'  \nContinuous fields with significant results *xgfw|c111|1111. '
 corpus += f'  \nThe list of continuous variables with significant results are *xgfw|c111|1111. '
-corpus += f'  \nThe list of all continuous fields with significant results are *xgfw|c111|1111. '
-corpus += f'  \nThe list of all continuous variables with significant results are *xgfw|c111|1111. '
+corpus += f'  \nSignificant continuous fields *xgfw|c111|1111. '
+corpus += f'  \nList of all significant continuous variables *xgfw|c111|1111. '
 
 #st.markdown(f"# Best intervals for continuous variables")
 
 
-st.dataframe(results_df.style.apply(highlight_pvalue, axis=1))            
+#st.dataframe(results_df.style.apply(highlight_pvalue, axis=1))            
 #st.markdown(download_csv_link(results_df, f"results_{seg_column}_{unique_value}.csv"), unsafe_allow_html=True)
 
 ##fin seccion variables segmentacion continuas
