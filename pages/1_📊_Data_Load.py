@@ -147,9 +147,9 @@ if data is not None and len(data.columns) > 1:
     if is_valid:
         if st.button("Process Data"):
             st.success("Data processing started!")
-            url = 'Analysis_Results'
+            #url = 'Analysis_Results'
             #st.write("check out this [link](%s)" % url)
-            st.markdown("Go to the [Analysis results](%s)" % url)
+            #st.markdown("Go to the [Analysis results](%s)" % url)
 
             st.session_state.store['uploaded_data'] = st.session_state.uploaded_data
             st.session_state.store['user_defined_info_dataset'] = st.session_state.user_defined_info_dataset

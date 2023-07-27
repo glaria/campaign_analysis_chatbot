@@ -65,7 +65,7 @@ if kpi is not None:
 
 
 # Segment fields
-st.markdown(f"# Discrete Segments with significant results")
+#st.markdown(f"# Discrete Segments with significant results")
 # 1. Identify the segmentation columns
 
 segmentation_columns = information_dataset.loc[(information_dataset['METATYPE'] == 'SF') & 

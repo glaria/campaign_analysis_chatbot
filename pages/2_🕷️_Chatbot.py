@@ -8,8 +8,10 @@ def check_string(s): #check if a string contains the special characters of the k
     else:
         return False
 
+st.title("Chatbot")
 
-st.write(st.session_state.corpus)
+
+#st.write(st.session_state.corpus)
 
 #st.write(st.session_state.reference_dict)
 
