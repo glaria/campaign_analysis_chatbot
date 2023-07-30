@@ -78,12 +78,14 @@ continue_segmentation_columns = information_dataset.loc[(information_dataset['ME
 reference_dict['b111'] = ('list',segmentation_columns) 
 
 corpus += f'  \nDiscrete fields details *xgfw|b111|1111. '
+corpus += f'  \nList of discrete fields *xgfw|b111|1111. '
 corpus += f'  \nDiscrete variables details *xgfw|b111|1112. '
 
 reference_dict['b112'] = ('list',continue_segmentation_columns) 
 
 corpus += f'  \nContinuous fields details *xgfw|b112|1112. '
-corpus += f'  \nDiscrete variables details *xgfw|b112|1112. '
+corpus += f'  \nList of discrete fields *xgfw|b112|1111. '
+corpus += f'  \nContinuous variables details *xgfw|b112|1112. '
 
 # iterate over segmentation columns
 
@@ -114,7 +116,8 @@ reference_dict['d111'] = ('table',all_results_df)
 corpus += f'  \nDiscrete fields with significant results *xgfw|d111|1111. '
 corpus += f'  \nThe list of discrete variables with significant results are *xgfw|d111|1111. '
 corpus += f'  \nSignificant discrete fields *xgfw|d111|1111. '
-corpus += f'  \nList of all significant discrete variables *xgfw|d111|1111. '
+corpus += f'  \nSignificant discrete variables *xgfw|d111|1111. '
+#corpus += f'  \nList of all significant discrete variables *xgfw|d111|1111. '
 
 #apply the style and display de df
 #st.dataframe(all_results_df.style.apply(highlight_pvalue, axis=1))
@@ -223,7 +226,8 @@ reference_dict['c111'] = ('table',results_df)
 corpus += f'  \nContinuous fields with significant results *xgfw|c111|1111. '
 corpus += f'  \nThe list of continuous variables with significant results are *xgfw|c111|1111. '
 corpus += f'  \nSignificant continuous fields *xgfw|c111|1111. '
-corpus += f'  \nList of all significant continuous variables *xgfw|c111|1111. '
+corpus += f'  \nSignificant continuous variables *xgfw|c111|1111. '
+#corpus += f'  \nList of all significant continuous variables *xgfw|c111|1111. '
 
 #st.markdown(f"# Best intervals for continuous variables")
 
