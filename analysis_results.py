@@ -12,8 +12,10 @@ corpus = "" #corpus doc for the chatbot
 reference_dict = {} #reference dict to extract python objects
 
 # dataset and information_dataset
-dataset = pd.read_csv("pages/temp/uploaded_data.csv", sep = ',')  
-information_dataset = pd.read_csv("pages/temp/user_defined_info_dataset.csv", sep = ',') 
+#dataset = pd.read_csv("pages/temp/uploaded_data.csv", sep = ',')  
+#information_dataset = pd.read_csv("pages/temp/user_defined_info_dataset.csv", sep = ',') 
+dataset = st.session_state.uploaded_data
+information_dataset = st.session_state.user_defined_info_dataset
 
 # Extract the TGCG column from the dataset
 tgcg_column = information_dataset.loc[information_dataset['METATYPE'] == 'TGCG', 'COLUMN'].values[0]

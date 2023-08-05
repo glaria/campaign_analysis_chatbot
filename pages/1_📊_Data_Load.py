@@ -151,11 +151,11 @@ if data is not None and len(data.columns) > 1:
             #st.write("check out this [link](%s)" % url)
             #st.markdown("Go to the [Analysis results](%s)" % url)
 
-            st.session_state.store['uploaded_data'] = st.session_state.uploaded_data
-            st.session_state.store['user_defined_info_dataset'] = st.session_state.user_defined_info_dataset
+            st.session_state['uploaded_data'] = st.session_state.uploaded_data
+            st.session_state['user_defined_info_dataset'] = st.session_state.user_defined_info_dataset
             
-            st.session_state.uploaded_data.to_csv("pages/temp/uploaded_data.csv", sep = ',', mode = 'w+')
-            st.session_state.user_defined_info_dataset.to_csv("pages/temp/user_defined_info_dataset.csv", sep = ',', mode = 'w+')
+            #st.session_state.uploaded_data.to_csv("pages/temp/uploaded_data.csv", sep = ',', mode = 'w+')
+            #st.session_state.user_defined_info_dataset.to_csv("pages/temp/user_defined_info_dataset.csv", sep = ',', mode = 'w+')
 
             #at this point we need to execute the methods of Analysis results and advanced analytics.
             #then we need to store the results and create the corpus that will be used by the chatbot
