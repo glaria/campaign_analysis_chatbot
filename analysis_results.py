@@ -118,16 +118,14 @@ continue_segmentation_columns = information_dataset.loc[(information_dataset['ME
                                               (information_dataset['DATATYPE'].isin(['NUMERIC'])), 
                                               'COLUMN'].values
 
-discrete_series = pd.Series(segmentation_columns, name="Field")
-discrete_series['Segmentation field type'] = 'Discrete'
+segmentation_df = pd.DataFrame({'Field': segmentation_columns})
+segmentation_df['Segmentation field type'] = 'Discrete'
 
-continuous_series = pd.Series(continue_segmentation_columns, name="Field")
-continuous_series['Segmentation field type'] = 'Continuous'
+continue_segmentation_df = pd.DataFrame({'Field': continue_segmentation_columns})
+continue_segmentation_df['Segmentation field type'] = 'Continuous'
 
-# Concat the 2 series
-combined_dataframe = pd.concat([discrete_series, continuous_series], axis=0).reset_index(drop=True)
-
-combined_dataframe = combined_dataframe[['Field', 'Segmentation field type']]
+# Concat both DataFrames
+combined_dataframe = pd.concat([segmentation_df, continue_segmentation_df], axis=0).reset_index(drop=True)
 
 reference_dict['s111'] = ('table',combined_dataframe) 
 
