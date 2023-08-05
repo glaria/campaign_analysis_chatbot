@@ -4,6 +4,24 @@ import re
 
 st.title("Chatbot")
 
+# CSS to change background color
+st.markdown(
+    """
+    <style>
+    .rules-box-top {
+        background-color: #e6ffe6;  # light green
+        border-radius: 5px;
+        padding: 10px;
+    }
+    .rules-box-bottom {
+        background-color: #ffe6e6;  # light red
+        border-radius: 5px;
+        padding: 10px;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
 
 #st.write(st.session_state.corpus)
 
@@ -52,6 +70,10 @@ for message in st.session_state.messages:
             st.plotly_chart(message["content"][1])
         elif (message["content"][0] == 'table' or message["content"][0] == 'list') and message["role"] == 'assistant':
             st.write(message["content"][1])
+        elif message["content"][0] == 'box_top' and message["role"] == 'assistant':
+            st.markdown(f"<div class='rules-box-top'>{message['content'][1]}</div>", unsafe_allow_html=True)
+        elif message["content"][0] == 'box_bottom' and message["role"] == 'assistant':
+            st.markdown(f"<div class='rules-box-bottom'>{message['content'][1]}</div>", unsafe_allow_html=True)
         else:
             st.markdown(message["content"])
 

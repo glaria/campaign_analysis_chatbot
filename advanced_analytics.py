@@ -2,12 +2,15 @@ import streamlit as st
 from matplotlib import pyplot as plt
 from lightgbm import LGBMRegressor
 from sklearn.tree import DecisionTreeClassifier
-from sklearn.tree import plot_tree
+#from sklearn.tree import plot_tree
 from app_functions import *
 
 # dataset and information_dataset
-dataset = pd.read_csv("pages/temp/uploaded_data.csv", sep = ',')  
-information_dataset = pd.read_csv("pages/temp/user_defined_info_dataset.csv", sep = ',') 
+dataset = st.session_state.uploaded_data
+information_dataset = st.session_state.user_defined_info_dataset
+
+corpus = "" #corpus doc for the chatbot
+reference_dict = {} #reference dict to extract python objects
 
 # Extract the TGCG column from the dataset
 tgcg_column = information_dataset.loc[information_dataset['METATYPE'] == 'TGCG', 'COLUMN'].values[0]
@@ -156,11 +159,18 @@ else:
         # Display the rules in Streamlit with modified background color
         #st.markdown("\n\n**Best subgroups identified**")
         for rule in rules_top25:
-            st.markdown(f"<div class='rules-box-top'>{rule}</div>", unsafe_allow_html=True)
-            
+            #st.markdown(f"<div class='rules-box-top'>{rule}</div>", unsafe_allow_html=True)
+            reference_dict['t111'] = ('box_top',rules_top25) 
+
+            corpus += f"""\nQuestion: What are the best segments?
+            Answer: The best segments are *xgfw|t111|1111.\n"""
         #st.markdown("\n\n**Worst subgroups identified**")
         for rule in rules_Bottom25:
-            st.markdown(f"<div class='rules-box-bottom'>{rule}</div>", unsafe_allow_html=True)
+            #st.markdown(f"<div class='rules-box-bottom'>{rule}</div>", unsafe_allow_html=True)
+            reference_dict['t112'] = ('box_bottom',rules_Bottom25) 
+
+            corpus += f"""\nQuestion: What are the worst segments?
+            Answer: The worst segments are *xgfw|t112|1111.\n"""
 
 
         #now we want to measure the uplift of the subset defined by the dt (for both bottom and top)
