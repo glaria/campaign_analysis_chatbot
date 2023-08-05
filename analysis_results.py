@@ -31,14 +31,25 @@ fig.update_traces(textinfo='label+percent', textfont_size=12, insidetextorientat
 
 reference_dict['a111'] = ('fig',fig) #st.plotly_chart(fig)
 
-corpus += f'\nThe Target/Control distribution is *xgfw|a111|1111. '
+corpus += f"""\n Question: What is the Target/Control distribution? 
+              Answer: The Target/Control distribution is *xgfw|a111|1111.
 
+              Question: What is the Target/Control split? 
+              Answer: The Target/Control split is *xgfw|a111|1111."""
 # Get all KPI columns
 kpi_columns = information_dataset.loc[information_dataset['METATYPE'] == 'KPI', 'COLUMN'].values
 kpi_columns = kpi_columns.tolist()
 reference_dict['a112'] = ('list',kpi_columns) #st.plotly_chart(fig)
 
-corpus += f'  \nThe list of KPIs is *xgfw|a112|1112. '
+corpus += f"""\nQuestion: What is the list of KPIs?
+Answer: The list of KPIs is *xgfw|a112|1112.
+
+Question: Can you provide the details of the KPIs list?
+Answer: The details for the KPIs list are *xgfw|a112|1112.
+
+Question: How is the list of KPIs defined?
+Answer: The list of KPIs is defined as *xgfw|a112|1112."""
+
 
 # Calculate metrics for each KPI and store the results in a list
 results = calculate_metrics(dataset, kpi_columns, tgcg_column) 
@@ -52,14 +63,46 @@ for kpi in kpi_columns:
     key_d = '*xgfw|k' + str(111 + kpi_columns.index(kpi)) + '|' + str(1111 + kpi_columns.index(kpi))
     key_d2 = 'k' + str(111 + kpi_columns.index(kpi))
     reference_dict[key_d2] = ('table',result_df[result_df['KPI'] == kpi])
-    corpus += f'  \nThe uplift of the KPI {kpi} is {key_d}. '
-    corpus += f'  \nThe results of the KPI {kpi} are {key_d}. '
+    corpus += f"""\nQuestion: What is the uplift of the KPI {kpi}?
+            Answer: The uplift of the KPI {kpi} is {key_d}.
+
+            Question: Can you provide the uplift value for the KPI {kpi}?
+            Answer: The uplift value for the KPI {kpi} is {key_d}.
+
+            Question: How is the uplift of the KPI {kpi} defined?
+            Answer: The uplift of the KPI {kpi} is defined as {key_d}."""
+
+    corpus += f"""\nQuestion: What are the results of the KPI {kpi}?
+            Answer: The results of the KPI {kpi} are {key_d}.
+            Question: Can you provide the results for the KPI {kpi}?
+
+            Answer: The results for the KPI {kpi} are {key_d}.
+            Question: How are the results of the KPI {kpi} defined?
+            
+            Answer: The results of the KPI {kpi} are defined as {key_d}."""
+
 
 if kpi is not None:
     key_d = '*xgfw|k' + str(111 + kpi_columns.index(kpi)+1) + '|' + str(1111 + kpi_columns.index(kpi)+1)
     key_d2 = 'k' + str(111 + kpi_columns.index(kpi)+1)
-    corpus += f'  \nThe uplift of all the KPIs are {key_d}. '
-    corpus += f'  \nThe results of all the KPIs are {key_d}. '
+    corpus += f"""\nQuestion: What is the uplift of all the KPIs?
+    Answer: The uplift of all the KPIs is {key_d}.\n"""
+
+    corpus += f"""\nQuestion: Can you provide the uplift value for all the KPIs?
+    Answer: The uplift value for all the KPIs is {key_d}.\n"""
+
+    corpus += f"""\nQuestion: How is the uplift of all the KPIs defined?
+    Answer: The uplift of all the KPIs is defined as {key_d}.\n"""
+
+    corpus += f"""\nQuestion: What are the results of all the KPIs?
+    Answer: The results of all the KPIs are {key_d}.\n"""
+
+    corpus += f"""\nQuestion: Can you provide the results for all the KPIs?
+    Answer: The results for all the KPIs are {key_d}.\n"""
+
+    corpus += f"""\nQuestion: How are the results of all the KPIs defined?
+    Answer: The results of all the KPIs are defined as {key_d}.\n"""
+
     reference_dict[key_d2] = ('table',result_df)
 
 
@@ -77,15 +120,21 @@ continue_segmentation_columns = information_dataset.loc[(information_dataset['ME
 
 reference_dict['b111'] = ('list',segmentation_columns) 
 
-corpus += f'  \nDiscrete fields details *xgfw|b111|1111. '
-corpus += f'  \nList of discrete fields *xgfw|b111|1111. '
-corpus += f'  \nDiscrete variables details *xgfw|b111|1112. '
+corpus += f"""\nQuestion: What is the list of discrete fields?
+Answer: The list of discrete fields is *xgfw|b111|1111.\n"""
+
+corpus += f"""\nQuestion: How is the list of discrete fields defined?
+Answer: The list of discrete fields is defined as *xgfw|b111|1111.\n"""
+
 
 reference_dict['b112'] = ('list',continue_segmentation_columns) 
 
-corpus += f'  \nContinuous fields details *xgfw|b112|1112. '
-corpus += f'  \nList of discrete fields *xgfw|b112|1111. '
-corpus += f'  \nContinuous variables details *xgfw|b112|1112. '
+corpus += f"""\nQuestion: What is the list of continuous fields?
+Answer: The list of discrete fields is *xgfw|b112|1111.\n"""
+
+corpus += f"""\nQuestion: How is the list of continuous fields defined?
+Answer: The list of discrete fields is defined as *xgfw|b112|1111.\n"""
+
 
 # iterate over segmentation columns
 
@@ -113,11 +162,25 @@ all_results_df.reset_index(drop=True, inplace=True)
 
 reference_dict['d111'] = ('table',all_results_df) 
 
-corpus += f'  \nDiscrete fields with significant results *xgfw|d111|1111. '
-corpus += f'  \nThe list of discrete variables with significant results are *xgfw|d111|1111. '
-corpus += f'  \nSignificant discrete fields *xgfw|d111|1111. '
-corpus += f'  \nSignificant discrete variables *xgfw|d111|1111. '
-#corpus += f'  \nList of all significant discrete variables *xgfw|d111|1111. '
+corpus += f"""\nQuestion: What are the discrete fields with significant results?
+Answer: The discrete fields with significant results are *xgfw|d111|1111.\n"""
+
+corpus += f"""\nQuestion: Can you provide details about the discrete fields with significant results?
+Answer: The details for the discrete fields with significant results are *xgfw|d111|1111.\n"""
+
+corpus += f"""\nQuestion: How are the discrete fields with significant results defined?
+Answer: The discrete fields with significant results are defined as *xgfw|d111|1111.\n"""
+
+corpus += f"""\nQuestion: What is the list of discrete variables with significant results?
+Answer: The list of discrete variables with significant results is *xgfw|d111|1111.\n"""
+
+corpus += f"""\nQuestion: Can you provide the details of the list of discrete variables with significant results?
+Answer: The details for the list of discrete variables with significant results are *xgfw|d111|1111.\n"""
+
+corpus += f"""\nQuestion: How is the list of discrete variables with significant results defined?
+Answer: The list of discrete variables with significant results is defined as *xgfw|d111|1111.\n"""
+
+
 
 #apply the style and display de df
 #st.dataframe(all_results_df.style.apply(highlight_pvalue, axis=1))
@@ -223,11 +286,25 @@ results_df["CG Acceptors"] = results_df["CG Acceptors"].astype(float).round(0).a
 
 reference_dict['c111'] = ('table',results_df) 
 
-corpus += f'  \nContinuous fields with significant results *xgfw|c111|1111. '
-corpus += f'  \nThe list of continuous variables with significant results are *xgfw|c111|1111. '
-corpus += f'  \nSignificant continuous fields *xgfw|c111|1111. '
-corpus += f'  \nSignificant continuous variables *xgfw|c111|1111. '
-#corpus += f'  \nList of all significant continuous variables *xgfw|c111|1111. '
+corpus += f"""\nQuestion: What are the continuous fields with significant results?
+Answer: The continuous fields with significant results are *xgfw|c111|1111.\n"""
+
+corpus += f"""\nQuestion: Can you provide details about the continuous fields with significant results?
+Answer: The details for the continuous fields with significant results are *xgfw|c111|1111.\n"""
+
+corpus += f"""\nQuestion: How are the continuous fields with significant results defined?
+Answer: The continuous fields with significant results are defined as *xgfw|c111|1111.\n"""
+
+corpus += f"""\nQuestion: What is the list of continuous variables with significant results?
+Answer: The list of continuous variables with significant results is *xgfw|c111|1111.\n"""
+
+corpus += f"""\nQuestion: Can you provide the details of the list of continuous variables with significant results?
+Answer: The details for the list of continuous variables with significant results are *xgfw|c111|1111.\n"""
+
+corpus += f"""\nQuestion: How is the list of continuous variables with significant results defined?
+Answer: The list of continuous variables with significant results is defined as *xgfw|c111|1111.\n"""
+
+
 
 #st.markdown(f"# Best intervals for continuous variables")
 
