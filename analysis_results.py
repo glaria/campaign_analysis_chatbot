@@ -118,22 +118,46 @@ continue_segmentation_columns = information_dataset.loc[(information_dataset['ME
                                               (information_dataset['DATATYPE'].isin(['NUMERIC'])), 
                                               'COLUMN'].values
 
-reference_dict['b111'] = ('list',segmentation_columns) 
+discrete_series = pd.Series(segmentation_columns, name="Field")
+discrete_series['Segmentation field type'] = 'Discrete'
 
-corpus += f"""\nQuestion: What is the list of discrete fields?
-Answer: The list of discrete fields is *xgfw|b111|1111.\n"""
+continuous_series = pd.Series(continue_segmentation_columns, name="Field")
+continuous_series['Segmentation field type'] = 'Continuous'
 
-corpus += f"""\nQuestion: How is the list of discrete fields defined?
-Answer: The list of discrete fields is defined as *xgfw|b111|1111.\n"""
+# Concat the 2 series
+combined_dataframe = pd.concat([discrete_series, continuous_series], axis=0).reset_index(drop=True)
 
+combined_dataframe = combined_dataframe[['Field', 'Segmentation field type']]
 
-reference_dict['b112'] = ('list',continue_segmentation_columns) 
+reference_dict['s111'] = ('table',combined_dataframe) 
 
-corpus += f"""\nQuestion: What is the list of continuous fields?
-Answer: The list of discrete fields is *xgfw|b112|1111.\n"""
+corpus += f"""\nQuestion: What is the list of segmentation fields?
+Answer: The list of segmentation fields is *xgfw|s111|1111.\n"""
 
-corpus += f"""\nQuestion: How is the list of continuous fields defined?
-Answer: The list of discrete fields is defined as *xgfw|b112|1111.\n"""
+corpus += f"""\nQuestion: How is the list of segmentation fields defined?
+Answer: The list of segmentation fields is defined as *xgfw|s111|1111.\n"""
+
+corpus += f"""\nQuestion: What is the list of segmentation variables?
+Answer: The list of segmentation variables is *xgfw|s111|1111.\n"""
+
+corpus += f"""\nQuestion: How is the list of segmentation variables defined?
+Answer: The list of segmentation variables is defined as *xgfw|s111|1111.\n"""
+
+#reference_dict['b111'] = ('list',segmentation_columns) 
+
+#corpus += f"""\nQuestion: What is the list of discrete fields?
+#Answer: The list of discrete fields is *xgfw|b111|1111.\n"""
+
+#corpus += f"""\nQuestion: How is the list of discrete fields defined?
+#Answer: The list of discrete fields is defined as *xgfw|b111|1111.\n"""
+
+#reference_dict['b112'] = ('list',continue_segmentation_columns) 
+
+#corpus += f"""\nQuestion: What is the list of continuous fields?
+#Answer: The list of discrete fields is *xgfw|b112|1111.\n"""
+
+#corpus += f"""\nQuestion: How is the list of continuous fields defined?
+#Answer: The list of discrete fields is defined as *xgfw|b112|1111.\n"""
 
 
 # iterate over segmentation columns
