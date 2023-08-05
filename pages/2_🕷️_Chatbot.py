@@ -2,12 +2,6 @@ import streamlit as st
 import languagemodels as lm
 import re
 
-def check_string(s): #check if a string contains the special characters of the keys defined
-    if re.search(r'\*xgfw[^|]*\|[^|]*\|', s):
-        return True
-    else:
-        return False
-
 st.title("Chatbot")
 
 
@@ -25,9 +19,17 @@ lm.set_max_ram('4gb')
 #lm.store_doc('The KPI acceptors has an uplift_value of *xgfw|a3|23')
 #lm.store_doc('The KPI vgtr has an uplift of 45')
 lm.store_doc(corpus)
+#st.write(lm.models.get_model_name('instruct'))
+
+def check_string(s): #check if a string contains the special characters of the keys defined
+    if re.search(r'\*xgfw[^|]*\|[^|]*\|', s):
+        return True
+    else:
+        return False
 
 def assist(question):
-    context = lm.get_doc_context(question).replace(": ", " - ")
+    
+    context = lm.get_doc_context(question)#.replace(": ", " - ")
 
     return lm.do(f"Answer using context: {context} Question: {question}")
 

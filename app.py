@@ -5,18 +5,16 @@ st.set_page_config(
     page_icon="👋",
 )
 
-st.write("# Campaign Analysis App 👋")
+st.write("# Chatbot App 👋")
 
 st.markdown(
     """
-    Optimized version of the app:
-
-    - Advanced anaytics focuses on finding best and worst subsets. 
-    - Basis lgbm simplified
+    Language model:  LaMini-Flan-T5-248M
+    See: https://github.com/mbzuai-nlp/lamini-lm https://github.com/jncraton/languagemodels
 
     **👈 
     
-    ### Documentation should go in here
+    ### Documentation should go here
 """
 )
 
