@@ -121,15 +121,15 @@ continue_segmentation_columns = information_dataset.loc[(information_dataset['ME
                                               'COLUMN'].values
 
 segmentation_df = pd.DataFrame({'Field': segmentation_columns})
-segmentation_df['Segmentation field type'] = 'Discrete'
+segmentation_df['Data type'] = 'Discrete'
 
 continue_segmentation_df = pd.DataFrame({'Field': continue_segmentation_columns})
-continue_segmentation_df['Segmentation field type'] = 'Continuous'
+continue_segmentation_df['Data type'] = 'Continuous'
 
 # Concat both DataFrames
 combined_dataframe = pd.concat([segmentation_df, continue_segmentation_df], axis=0).reset_index(drop=True)
 
-reference_dict['s111'] = ('table',combined_dataframe) 
+reference_dict['s111'] = ('table2',combined_dataframe) 
 
 corpus += f"""\nQuestion: What is the list of segmentation fields?
 Answer: The list of segmentation fields is *xgfw|s111|1111.\n"""

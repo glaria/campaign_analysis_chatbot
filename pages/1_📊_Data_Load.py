@@ -166,6 +166,8 @@ if data is not None and len(data.columns) > 1:
             st.session_state['corpus'] = ar.corpus + "\n" + aa.corpus
             st.session_state['reference_dict'] = {**ar.reference_dict, **aa.reference_dict}
 
+            st.success("Data loaded succesfully!")
+
     else:
         st.error("There is an issue with the data types or meta types. Please review and correct them.")
 

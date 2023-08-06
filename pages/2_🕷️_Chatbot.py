@@ -1,6 +1,7 @@
 import streamlit as st
 import languagemodels as lm
 import re
+from app_functions import *
 
 st.title("Chatbot")
 
@@ -68,8 +69,10 @@ for message in st.session_state.messages:
             st.markdown(message["content"][1]) 
         elif message["content"][0] == 'fig' and message["role"] == 'assistant':
             st.plotly_chart(message["content"][1])
-        elif (message["content"][0] == 'table' or message["content"][0] == 'list') and message["role"] == 'assistant':
+        elif (message["content"][0] == 'table2' or message["content"][0] == 'list') and message["role"] == 'assistant':
             st.write(message["content"][1])
+        elif (message["content"][0] == 'table') and message["role"] == 'assistant':
+            st.dataframe(message["content"][1].style.apply(highlight_pvalue, axis=1))
         elif message["content"][0] == 'box_top' and message["role"] == 'assistant':
             for rule in message["content"][1]:
                 st.markdown(f"<div class='rules-box-top'>{rule}</div>", unsafe_allow_html=True)
@@ -94,8 +97,10 @@ if prompt := st.chat_input("What is up?"):
             st.write(process_response(response)[1]) 
         elif process_response(response)[0] == 'fig':
             st.plotly_chart(process_response(response)[1])
-        elif process_response(response)[0] == 'table' or  process_response(response)[0] == 'list':
+        elif process_response(response)[0] == 'table2' or  process_response(response)[0] == 'list':
             st.write(process_response(response)[1])
+        elif process_response(response)[0] == 'table':
+            st.dataframe(process_response(response)[1].style.apply(highlight_pvalue, axis=1))
         elif process_response(response)[0] == 'box_top':
             for rules in process_response(response)[1]:
                 st.markdown(f"<div class='rules-box-top'>{rules}</div>", unsafe_allow_html=True)
