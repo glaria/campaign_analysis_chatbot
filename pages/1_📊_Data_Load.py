@@ -5,8 +5,18 @@ import base64
 import plotly.express as px
 from app_functions import *
 
+
 # Set up the Streamlit app
 st.set_page_config(page_title="Data load", layout="wide", page_icon= "📊")
+
+
+hide_streamlit_style = """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            </style>
+            """
+st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 st.title("Data load")
 
 # Create a file uploader for CSV or Excel files

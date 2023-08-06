@@ -3,7 +3,18 @@ import languagemodels as lm
 import re
 from app_functions import *
 
+st.set_page_config(page_title="Chatbot", layout="wide", page_icon= "🕷️")
+
+
 st.title("Chatbot")
+
+hide_streamlit_style = """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            </style>
+            """
+st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
 # CSS to change background color
 st.markdown(
