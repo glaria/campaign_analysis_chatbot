@@ -74,11 +74,13 @@ for message in st.session_state.messages:
         elif (message["content"][0] == 'table') and message["role"] == 'assistant':
             st.dataframe(message["content"][1].style.apply(highlight_pvalue, axis=1))
         elif message["content"][0] == 'box_top' and message["role"] == 'assistant':
-            for rule in message["content"][1]:
+            for rule in message["content"][1][0]:
                 st.markdown(f"<div class='rules-box-top'>{rule}</div>", unsafe_allow_html=True)
+            st.dataframe(message["content"][1][1].style.apply(highlight_pvalue, axis=1)) 
         elif message["content"][0] == 'box_bottom' and message["role"] == 'assistant':
-            for rule in message["content"][1]:
+            for rule in message["content"][1][0]:
                 st.markdown(f"<div class='rules-box-bottom'>{rule}</div>", unsafe_allow_html=True)
+            st.dataframe(message["content"][1][1].style.apply(highlight_pvalue, axis=1)) 
         else:
             st.markdown(message["content"])
 
@@ -102,11 +104,13 @@ if prompt := st.chat_input("What is up?"):
         elif process_response(response)[0] == 'table':
             st.dataframe(process_response(response)[1].style.apply(highlight_pvalue, axis=1))
         elif process_response(response)[0] == 'box_top':
-            for rules in process_response(response)[1]:
+            for rules in process_response(response)[1][0]:
                 st.markdown(f"<div class='rules-box-top'>{rules}</div>", unsafe_allow_html=True)
+            st.dataframe(process_response(response)[1][1].style.apply(highlight_pvalue, axis=1))
         elif process_response(response)[0] == 'box_bottom':
-            for rules in process_response(response)[1]:
+            for rules in process_response(response)[1][0]:
                 st.markdown(f"<div class='rules-box-bottom'>{rules}</div>", unsafe_allow_html=True)
+            st.dataframe(process_response(response)[1][1].style.apply(highlight_pvalue, axis=1))
         print(response)
         full_response += response
 

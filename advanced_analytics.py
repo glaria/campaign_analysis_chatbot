@@ -55,7 +55,7 @@ elif num_target_records < 100:
     st.write("There are fewer than 100 target records. The model cannot be processed.")
 else:
     for kpi in kpi_columns:
-        st.write(kpi_columns)
+        #st.write(kpi_columns)
         st.header(f"KPI: {kpi}")
         dataset = dataset_fix.copy() #after the first iteration we need to use a clean version of the dataset
         dataset_copy = dataset.copy()
@@ -159,19 +159,6 @@ else:
 
         # Display the rules in Streamlit with modified background color
         #st.markdown("\n\n**Best subgroups identified**")
-        key_b = '*xgfw|m' + str(111 + kpi_columns.index(kpi_original)) + '|' + str(1111 + kpi_columns.index(kpi_original))
-        key_b2 = 'm' + str(111 + kpi_columns.index(kpi_original))
-        reference_dict[key_b2] = ('box_top',rules_top25)
-
-        corpus += f"""\nQuestion: What are the best segments for the kpi {kpi}?
-        Answer: The best segments for kpi {kpi_original} are {key_b}.\n"""
-
-        key_w = '*xgfw|n' + str(111 + kpi_columns.index(kpi_original)) + '|' + str(1111 + kpi_columns.index(kpi_original))
-        key_w2 = 'n' + str(111 + kpi_columns.index(kpi_original))
-        reference_dict[key_w2] = ('box_bottom',rules_top25)
-
-        corpus += f"""\nQuestion: What are the worst segments for the kpi {kpi}?
-        Answer: The worst segments for kpi {kpi_original} are {key_w}.\n"""
 
         #now we want to measure the uplift of the subset defined by the dt (for both bottom and top)
         # Select the same features as used for the model and apply the same transformations
@@ -185,24 +172,56 @@ else:
         # Create an empty DataFrame to store the results
         results_df = pd.DataFrame(columns=[ "KPI", "TG Acceptors","TG Acceptance (%)", "CG Acceptors","CG Acceptance (%)", "Uplift (%)", "P-value"])
 
-        for value in ['Top25%','Bottom25%']:
-            filtered_dataset = dataset.loc[dataset['dt_classification'] == value]
-            result_df = calculate_metrics2(filtered_dataset, kpi_original, tgcg_column)
-            if not result_df.empty:
-                for index, row in result_df.iterrows():
-                    new_row = pd.DataFrame({
-                        "KPI": [kpi_original],
-                        "TG Acceptors": [row["TG Acceptors"]],
-                        "TG Acceptance (%)": [row["TG Acceptance (%)"]],
-                        "CG Acceptors": [row["CG Acceptors"]],
-                        "CG Acceptance (%)": [row["CG Acceptance (%)"]],
-                        "Uplift (%)": [row["Uplift (%)"]],
-                        "P-value": [row["P-value"]],
-                    })
-                    results_df = pd.concat([results_df, new_row], ignore_index=True)
+        top25_dataset = dataset.loc[dataset['dt_classification'] == 'Top25%']
+        top25_result_df = calculate_metrics2(top25_dataset, kpi_original, tgcg_column)
+        if not top25_result_df.empty:
+            for index, row in top25_result_df.iterrows():
+                new_row = pd.DataFrame({
+                    "KPI": [kpi_original],
+                    "TG Acceptors": [row["TG Acceptors"]],
+                    "TG Acceptance (%)": [row["TG Acceptance (%)"]],
+                    "CG Acceptors": [row["CG Acceptors"]],
+                    "CG Acceptance (%)": [row["CG Acceptance (%)"]],
+                    "Uplift (%)": [row["Uplift (%)"]],
+                    "P-value": [row["P-value"]],
+                })
+                top25_results_df = pd.concat([results_df, new_row], ignore_index=True)
 
-            results_df["TG Acceptors"] = results_df["TG Acceptors"].astype(float).round(0).astype(int)
-            results_df["CG Acceptors"] = results_df["CG Acceptors"].astype(float).round(0).astype(int)
+        top25_results_df["TG Acceptors"] = top25_results_df["TG Acceptors"].astype(float).round(0).astype(int)
+        top25_results_df["CG Acceptors"] = top25_results_df["CG Acceptors"].astype(float).round(0).astype(int)        
+        
+        bottom25_dataset = dataset.loc[dataset['dt_classification'] == 'Bottom25%']
+        bottom25_result_df = calculate_metrics2(bottom25_dataset, kpi_original, tgcg_column)
+        if not bottom25_result_df.empty:
+            for index, row in bottom25_result_df.iterrows():
+                new_row = pd.DataFrame({
+                    "KPI": [kpi_original],
+                    "TG Acceptors": [row["TG Acceptors"]],
+                    "TG Acceptance (%)": [row["TG Acceptance (%)"]],
+                    "CG Acceptors": [row["CG Acceptors"]],
+                    "CG Acceptance (%)": [row["CG Acceptance (%)"]],
+                    "Uplift (%)": [row["Uplift (%)"]],
+                    "P-value": [row["P-value"]],
+                })
+                bottom25_results_df = pd.concat([results_df, new_row], ignore_index=True)
+
+        bottom25_results_df["TG Acceptors"] = bottom25_results_df["TG Acceptors"].astype(float).round(0).astype(int)
+        bottom25_results_df["CG Acceptors"] = bottom25_results_df["CG Acceptors"].astype(float).round(0).astype(int)
 
         st.markdown(f"**Results on the best and worst subgroups**")
-        st.dataframe(results_df.style.apply(highlight_pvalue, axis=1))  
+        st.dataframe(top25_results_df.style.apply(highlight_pvalue, axis=1))  
+        st.dataframe(bottom25_results_df.style.apply(highlight_pvalue, axis=1))  
+
+        key_b = '*xgfw|m' + str(111 + kpi_columns.index(kpi_original)) + '|' + str(1111 + kpi_columns.index(kpi_original))
+        key_b2 = 'm' + str(111 + kpi_columns.index(kpi_original))
+        reference_dict[key_b2] = ('box_top',(rules_top25,top25_results_df))
+
+        corpus += f"""\nQuestion: What are the best segments for the kpi {kpi}?
+        Answer: The best segments for kpi {kpi_original} are {key_b}.\n"""
+
+        key_w = '*xgfw|n' + str(111 + kpi_columns.index(kpi_original)) + '|' + str(1111 + kpi_columns.index(kpi_original))
+        key_w2 = 'n' + str(111 + kpi_columns.index(kpi_original))
+        reference_dict[key_w2] = ('box_bottom',(rules_Bottom25, bottom25_results_df))
+
+        corpus += f"""\nQuestion: What are the worst segments for the kpi {kpi}?
+        Answer: The worst segments for kpi {kpi_original} are {key_w}.\n"""
