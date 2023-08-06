@@ -56,7 +56,7 @@ elif num_target_records < 100:
 else:
     for kpi in kpi_columns:
         #st.write(kpi_columns)
-        st.header(f"KPI: {kpi}")
+        #st.header(f"KPI: {kpi}")
         dataset = dataset_fix.copy() #after the first iteration we need to use a clean version of the dataset
         dataset_copy = dataset.copy()
         kpi_original = kpi
@@ -208,9 +208,9 @@ else:
         bottom25_results_df["TG Acceptors"] = bottom25_results_df["TG Acceptors"].astype(float).round(0).astype(int)
         bottom25_results_df["CG Acceptors"] = bottom25_results_df["CG Acceptors"].astype(float).round(0).astype(int)
 
-        st.markdown(f"**Results on the best and worst subgroups**")
-        st.dataframe(top25_results_df.style.apply(highlight_pvalue, axis=1))  
-        st.dataframe(bottom25_results_df.style.apply(highlight_pvalue, axis=1))  
+        #st.markdown(f"**Results on the best and worst subgroups**")
+        #st.dataframe(top25_results_df.style.apply(highlight_pvalue, axis=1))  
+        #st.dataframe(bottom25_results_df.style.apply(highlight_pvalue, axis=1))  
 
         key_b = '*xgfw|m' + str(111 + kpi_columns.index(kpi_original)) + '|' + str(1111 + kpi_columns.index(kpi_original))
         key_b2 = 'm' + str(111 + kpi_columns.index(kpi_original))
