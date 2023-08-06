@@ -71,9 +71,11 @@ for message in st.session_state.messages:
         elif (message["content"][0] == 'table' or message["content"][0] == 'list') and message["role"] == 'assistant':
             st.write(message["content"][1])
         elif message["content"][0] == 'box_top' and message["role"] == 'assistant':
-            st.markdown(f"<div class='rules-box-top'>{message['content'][1]}</div>", unsafe_allow_html=True)
+            for rule in message["content"][1]:
+                st.markdown(f"<div class='rules-box-top'>{rule}</div>", unsafe_allow_html=True)
         elif message["content"][0] == 'box_bottom' and message["role"] == 'assistant':
-            st.markdown(f"<div class='rules-box-bottom'>{message['content'][1]}</div>", unsafe_allow_html=True)
+            for rule in message["content"][1]:
+                st.markdown(f"<div class='rules-box-bottom'>{rule}</div>", unsafe_allow_html=True)
         else:
             st.markdown(message["content"])
 
@@ -94,6 +96,12 @@ if prompt := st.chat_input("What is up?"):
             st.plotly_chart(process_response(response)[1])
         elif process_response(response)[0] == 'table' or  process_response(response)[0] == 'list':
             st.write(process_response(response)[1])
+        elif process_response(response)[0] == 'box_top':
+            for rules in process_response(response)[1]:
+                st.markdown(f"<div class='rules-box-top'>{rules}</div>", unsafe_allow_html=True)
+        elif process_response(response)[0] == 'box_bottom':
+            for rules in process_response(response)[1]:
+                st.markdown(f"<div class='rules-box-bottom'>{rules}</div>", unsafe_allow_html=True)
         print(response)
         full_response += response
 

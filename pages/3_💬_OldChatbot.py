@@ -33,7 +33,7 @@ def check_string(s): #check if a string contains the special characters of the k
 
 st.write(st.session_state.corpus)
 
-#st.write(st.session_state.reference_dict)
+st.write(st.session_state.reference_dict)
 
 
 corpus = st.session_state.corpus

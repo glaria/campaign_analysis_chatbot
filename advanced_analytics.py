@@ -25,7 +25,7 @@ dataset['tgcg_fl'] = np.where(dataset[tgcg_column] == 'target', 1, 0)
 
 # Get all KPI columns
 kpi_columns = information_dataset.loc[information_dataset['METATYPE'] == 'KPI', 'COLUMN'].values
-
+kpi_columns = kpi_columns.tolist()
 # 1. Identify the segmentation columns
 
 segmentation_columns = information_dataset.loc[(information_dataset['METATYPE'] == 'SF') & 
@@ -55,6 +55,7 @@ elif num_target_records < 100:
     st.write("There are fewer than 100 target records. The model cannot be processed.")
 else:
     for kpi in kpi_columns:
+        st.write(kpi_columns)
         st.header(f"KPI: {kpi}")
         dataset = dataset_fix.copy() #after the first iteration we need to use a clean version of the dataset
         dataset_copy = dataset.copy()
@@ -158,20 +159,19 @@ else:
 
         # Display the rules in Streamlit with modified background color
         #st.markdown("\n\n**Best subgroups identified**")
-        for rule in rules_top25:
-            #st.markdown(f"<div class='rules-box-top'>{rule}</div>", unsafe_allow_html=True)
-            reference_dict['t111'] = ('box_top',rules_top25) 
+        key_b = '*xgfw|m' + str(111 + kpi_columns.index(kpi_original)) + '|' + str(1111 + kpi_columns.index(kpi_original))
+        key_b2 = 'm' + str(111 + kpi_columns.index(kpi_original))
+        reference_dict[key_b2] = ('box_top',rules_top25)
 
-            corpus += f"""\nQuestion: What are the best segments?
-            Answer: The best segments are *xgfw|t111|1111.\n"""
-        #st.markdown("\n\n**Worst subgroups identified**")
-        for rule in rules_Bottom25:
-            #st.markdown(f"<div class='rules-box-bottom'>{rule}</div>", unsafe_allow_html=True)
-            reference_dict['t112'] = ('box_bottom',rules_Bottom25) 
+        corpus += f"""\nQuestion: What are the best segments for the kpi {kpi}?
+        Answer: The best segments for kpi {kpi_original} are {key_b}.\n"""
 
-            corpus += f"""\nQuestion: What are the worst segments?
-            Answer: The worst segments are *xgfw|t112|1111.\n"""
+        key_w = '*xgfw|n' + str(111 + kpi_columns.index(kpi_original)) + '|' + str(1111 + kpi_columns.index(kpi_original))
+        key_w2 = 'n' + str(111 + kpi_columns.index(kpi_original))
+        reference_dict[key_w2] = ('box_bottom',rules_top25)
 
+        corpus += f"""\nQuestion: What are the worst segments for the kpi {kpi}?
+        Answer: The worst segments for kpi {kpi_original} are {key_w}.\n"""
 
         #now we want to measure the uplift of the subset defined by the dt (for both bottom and top)
         # Select the same features as used for the model and apply the same transformations
