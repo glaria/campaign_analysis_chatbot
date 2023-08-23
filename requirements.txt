@@ -7,4 +7,3 @@ scikit-learn
 scipy
 streamlit==1.22.0
 languagemodels
-re
