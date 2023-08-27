@@ -275,7 +275,7 @@ for seg_column in continuous_segmentation_columns:
 
         # Ensure that start_index is less than or equal to end_index
         if start_index > end_index:
-            start_index, end_index = end_index, start_index
+            max_granular_uplift, start_index, end_index = kadane_algorithm_mod(granular_uplift_array)
 
         # Get the start and end values from 'concatenated_df' using the indices obtained
         start_value = concatenated_df.iloc[start_index][seg_column]

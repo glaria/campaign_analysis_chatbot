@@ -35,6 +35,24 @@ def kadane_algorithm(input_list):
             end = i
     return max_global, start, end
 
+def kadane_algorithm_mod(input_list):
+    curr_sum = max_total = input_list[0]
+    start = end = 0
+    for i in range(1, len(input_list)):
+        curr_sum += input_list[i]
+        if curr_sum > max_total:
+            max_total = curr_sum
+            end = i
+        if curr_sum < 0:
+            curr_sum = 0
+    curr_sum = 0
+    for i in range(end, -1, -1): #second iteration for identifying the start of the interval of max sum
+        curr_sum += input_list[i]
+        if curr_sum == max_total:
+            start = i
+            break
+    return max_total, start, end
+
 
 ####***Functions used during dataload***####
 def infer_datatypes_and_metatypes(dataset: pd.DataFrame) -> pd.DataFrame:
