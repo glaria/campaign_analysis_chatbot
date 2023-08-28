@@ -7,7 +7,7 @@ from sklearn.tree import _tree
 from matplotlib import pyplot as plt
 
 
-significance_treshold = 0.1
+significance_treshold = 0.05
 
 
 def z2p(z):
@@ -52,6 +52,17 @@ def kadane_algorithm_mod(input_list):
             start = i
             break
     return max_total, start, end
+
+def get_negative_array(values):
+    transformed_list = []
+    for value in values:
+        if value > 0.5:
+            transformed_list.append(-1)
+        elif value < -0.5:
+            transformed_list.append(1)
+        else:
+            transformed_list.append(value)
+    return transformed_list
 
 
 ####***Functions used during dataload***####
@@ -149,9 +160,12 @@ def calculate_metrics2(subset, kpi, tgcg_column):
 
 def highlight_pvalue(row):
     """Highlights rows with P-value <= significance_treshold."""
-    if float(row["P-value"]) <= significance_treshold:
-        return ["background-color: lightgreen"] * len(row)
-    return [""] * len(row)
+    if float(row["P-value"]) <= significance_treshold and float(row["Uplift (%)"]) >= 0:
+        return ["background-color: #CCFFCC"] * len(row)
+    elif float(row["P-value"]) <= significance_treshold and float(row["Uplift (%)"]) < 0:
+        return ["background-color: #FFEAEA"] * len(row)
+    else:
+        return [""] * len(row)
 
 def calculate_metrics(df, kpi_columns, tgcg_column):
     """Calculates metrics for a list of KPIs."""

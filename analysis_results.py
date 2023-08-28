@@ -273,40 +273,48 @@ for seg_column in continuous_segmentation_columns:
         granular_uplift_array = concatenated_df['granular_uplift'].values
         max_granular_uplift, start_index, end_index = kadane_algorithm(granular_uplift_array)
 
-        # Ensure that start_index is less than or equal to end_index
-        if start_index > end_index:
-            max_granular_uplift, start_index, end_index = kadane_algorithm_mod(granular_uplift_array)
+        #now we calculate the best intervals for the array in both directions (max and min)
+        def process_segmentation(granular_uplift_array, concatenated_df, dataset, seg_column, kpi, tgcg_column, results_df):
+            max_granular_uplift, start_index, end_index = kadane_algorithm(granular_uplift_array)
+            if start_index > end_index:
+                max_granular_uplift, start_index, end_index = kadane_algorithm_mod(granular_uplift_array)
 
-        # Get the start and end values from 'concatenated_df' using the indices obtained
-        start_value = concatenated_df.iloc[start_index][seg_column]
-        end_value = concatenated_df.iloc[end_index][seg_column]
+            start_value = concatenated_df.iloc[start_index][seg_column]
+            end_value = concatenated_df.iloc[end_index][seg_column]
 
-        # Filter the 'dataset' dataframe to keep only the rows where the value in 'seg_column' is between 'start_value' and 'end_value'
-        filtered_dataset = dataset[(dataset[seg_column] >= start_value) & (dataset[seg_column] <= end_value)]
+            filtered_dataset = dataset[(dataset[seg_column] >= start_value) & (dataset[seg_column] <= end_value)]
+            
+            result_df = calculate_metrics2(filtered_dataset, kpi, tgcg_column)
+            
+            if not result_df.empty:
+                for index, row in result_df.iterrows():
+                    new_row = pd.DataFrame({
+                        "Segmentation Field": [seg_column],
+                        "Lower limit": [start_value],
+                        "Upper limit": [end_value],
+                        "KPI": [kpi],
+                        "TG Acceptors": [row["TG Acceptors"]],
+                        "TG Acceptance (%)": [row["TG Acceptance (%)"]],
+                        "CG Acceptors": [row["CG Acceptors"]],
+                        "CG Acceptance (%)": [row["CG Acceptance (%)"]],
+                        "Uplift (%)": [row["Uplift (%)"]],
+                        "P-value": [row["P-value"]],
+                    })
+                    results_df = pd.concat([results_df, new_row], ignore_index=True)
+            
+            return results_df
 
-        # Calculate the metrics
-        
-        result_df = calculate_metrics2(filtered_dataset, kpi, tgcg_column)
-        # Keep non-significant results as well
-
-        if not result_df.empty:
-            for index, row in result_df.iterrows():
-                new_row = pd.DataFrame({
-                    "Segmentation Field": [seg_column],
-                    "Lower limit": [start_value],
-                    "Upper limit": [end_value],
-                    "KPI": [kpi],
-                    "TG Acceptors": [row["TG Acceptors"]],
-                    "TG Acceptance (%)": [row["TG Acceptance (%)"]],
-                    "CG Acceptors": [row["CG Acceptors"]],
-                    "CG Acceptance (%)": [row["CG Acceptance (%)"]],
-                    "Uplift (%)": [row["Uplift (%)"]],
-                    "P-value": [row["P-value"]],
-                })
-                results_df = pd.concat([results_df, new_row], ignore_index=True)
+        for k in range(2):
+            if k == 1:
+                granular_uplift_array = get_negative_array(granular_uplift_array)
+            
+            results_df = process_segmentation(granular_uplift_array, concatenated_df, dataset, seg_column, kpi, tgcg_column, results_df)
 
 results_df["TG Acceptors"] = results_df["TG Acceptors"].astype(float).round(0).astype(int)
 results_df["CG Acceptors"] = results_df["CG Acceptors"].astype(float).round(0).astype(int)
+
+#exclude non-significant results
+results_df = results_df[results_df['P-value'] <= significance_treshold]
 
 reference_dict['c111'] = ('table',results_df) 
 

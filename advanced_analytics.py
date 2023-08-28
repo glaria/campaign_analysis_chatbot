@@ -216,12 +216,12 @@ else:
         key_b2 = 'm' + str(111 + kpi_columns.index(kpi_original))
         reference_dict[key_b2] = ('box_top',(rules_top25,top25_results_df))
 
-        corpus += f"""\nQuestion: What are the best segments for the kpi {kpi}?
+        corpus += f"""\nQuestion: What are the best segments for the kpi {kpi_original}?
         Answer: The best segments for kpi {kpi_original} are {key_b}.\n"""
 
         key_w = '*xgfw|n' + str(111 + kpi_columns.index(kpi_original)) + '|' + str(1111 + kpi_columns.index(kpi_original))
         key_w2 = 'n' + str(111 + kpi_columns.index(kpi_original))
         reference_dict[key_w2] = ('box_bottom',(rules_Bottom25, bottom25_results_df))
 
-        corpus += f"""\nQuestion: What are the worst segments for the kpi {kpi}?
+        corpus += f"""\nQuestion: What are the worst segments for the kpi {kpi_original}?
         Answer: The worst segments for kpi {kpi_original} are {key_w}.\n"""
