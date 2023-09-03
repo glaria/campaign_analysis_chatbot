@@ -26,7 +26,7 @@ dataset[tgcg_column] = dataset[tgcg_column].str.lower()
 tgcg_counts = dataset[tgcg_column].value_counts()
 
 # Create a pie chart with counts and percentages
-fig = px.pie(tgcg_counts.reset_index(), values=tgcg_counts, names='index', title="Target vs Control Groups")
+fig = px.pie(tgcg_counts.reset_index(), values=tgcg_counts, names = tgcg_column, title="Target vs Control Groups")
 
 # Display the total counts and percentages in the labels
 fig.update_traces(textinfo='label+percent', textfont_size=12, insidetextorientation='radial')
