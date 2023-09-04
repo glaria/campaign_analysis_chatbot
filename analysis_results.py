@@ -58,7 +58,7 @@ results = calculate_metrics(dataset, kpi_columns, tgcg_column)
 
 # Convert the list of results to a pandas DataFrame
 result_df = pd.DataFrame(results, columns=["KPI", "TG Acceptors", "TG Acceptance (%)", "CG Acceptors", "CG Acceptance (%)", "Uplift (%)", "P-value"])
-result_df = result_df.applymap(format_float)
+result_df = result_df.map(format_float)
 
 kpi = None
 for kpi in kpi_columns:
